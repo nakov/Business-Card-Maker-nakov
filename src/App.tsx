@@ -7,6 +7,7 @@ interface GameObject {
   y: number;
   speed: number;
   type: 'rock' | 'coin' | 'star' | 'gem';
+  direction: 'down' | 'down-left' | 'down-right';
 }
 
 interface Player {
@@ -123,12 +124,16 @@ function App() {
     const baseSpeed = (type === 'rock' ? 3 + Math.random() * 2 : 2 + Math.random() * 1.5);
     const scaledSpeed = baseSpeed * (currentDims.height / BASE_HEIGHT);
 
+    const directions: Array<'down' | 'down-left' | 'down-right'> = ['down', 'down-left', 'down-right'];
+    const direction = directions[Math.floor(Math.random() * directions.length)];
+
     const newObject: GameObject = {
       id: objectIdRef.current++,
       x: Math.random() * (currentDims.width - currentDims.objectSize),
       y: -currentDims.objectSize,
       speed: scaledSpeed,
       type,
+      direction,
     };
 
     setObjects(prev => [...prev, newObject]);
@@ -175,8 +180,19 @@ function App() {
 
     setObjects(prev => {
       const updated = prev
-        .map(obj => ({ ...obj, y: obj.y + obj.speed }))
-        .filter(obj => obj.y < currentDims.height);
+        .map(obj => {
+          let newX = obj.x;
+          let newY = obj.y + obj.speed;
+          
+          if (obj.direction === 'down-left') {
+            newX = obj.x - obj.speed * 0.5;
+          } else if (obj.direction === 'down-right') {
+            newX = obj.x + obj.speed * 0.5;
+          }
+          
+          return { ...obj, x: newX, y: newY };
+        })
+        .filter(obj => obj.y < currentDims.height && obj.x > -currentDims.objectSize && obj.x < currentDims.width);
 
       const remaining: GameObject[] = [];
 
