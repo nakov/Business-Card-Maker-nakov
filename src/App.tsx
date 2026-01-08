@@ -74,6 +74,8 @@ function App() {
       lastSpawnRef.current = now;
     }
 
+    let currentPlayer = player;
+
     setPlayer(prev => {
       let newX = prev.x;
 
@@ -84,7 +86,8 @@ function App() {
         newX = Math.min(GAME_WIDTH - PLAYER_SIZE, prev.x + PLAYER_SPEED);
       }
 
-      return { ...prev, x: newX };
+      currentPlayer = { ...prev, x: newX };
+      return currentPlayer;
     });
 
     setObjects(prev => {
@@ -95,7 +98,7 @@ function App() {
       const remaining: GameObject[] = [];
 
       updated.forEach(obj => {
-        if (checkCollision(obj, player)) {
+        if (checkCollision(obj, currentPlayer)) {
           if (obj.type === 'rock') {
             setLives(l => {
               const newLives = l - 1;
@@ -236,36 +239,40 @@ function App() {
             </div>
           ) : null}
 
-          {objects.map(obj => (
-            <div
-              key={obj.id}
-              className="absolute text-3xl transition-none"
-              style={{
-                left: obj.x,
-                top: obj.y,
-                width: OBJECT_SIZE,
-                height: OBJECT_SIZE,
-                lineHeight: `${OBJECT_SIZE}px`,
-                textAlign: 'center',
-              }}
-            >
-              {getObjectEmoji(obj.type)}
-            </div>
-          ))}
+          {gameStarted && (
+            <>
+              {objects.map(obj => (
+                <div
+                  key={obj.id}
+                  className="absolute text-3xl transition-none"
+                  style={{
+                    left: obj.x,
+                    top: obj.y,
+                    width: OBJECT_SIZE,
+                    height: OBJECT_SIZE,
+                    lineHeight: `${OBJECT_SIZE}px`,
+                    textAlign: 'center',
+                  }}
+                >
+                  {getObjectEmoji(obj.type)}
+                </div>
+              ))}
 
-          <div
-            className="absolute text-4xl transition-none"
-            style={{
-              left: player.x,
-              top: player.y,
-              width: PLAYER_SIZE,
-              height: PLAYER_SIZE,
-              lineHeight: `${PLAYER_SIZE}px`,
-              textAlign: 'center',
-            }}
-          >
-            🏃
-          </div>
+              <div
+                className="absolute text-4xl transition-none z-10"
+                style={{
+                  left: player.x,
+                  top: player.y,
+                  width: PLAYER_SIZE,
+                  height: PLAYER_SIZE,
+                  lineHeight: `${PLAYER_SIZE}px`,
+                  textAlign: 'center',
+                }}
+              >
+                🏃
+              </div>
+            </>
+          )}
 
           <div className="absolute bottom-0 left-0 right-0 h-12 bg-green-600 border-t-4 border-green-700"></div>
         </div>
