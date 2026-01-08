@@ -301,7 +301,7 @@ function App() {
         </div>
 
         <div
-          className="relative bg-gradient-to-b from-sky-300 to-green-400 rounded-lg shadow-2xl overflow-hidden border-2 sm:border-4 border-white/30"
+          className="relative bg-gradient-to-b from-sky-300 to-blue-400 rounded-lg shadow-2xl overflow-hidden border-2 sm:border-4 border-white/30"
           style={{ width: dims.width, height: dims.height }}
           data-testid="game-area"
         >
@@ -310,7 +310,7 @@ function App() {
               <div className="text-center px-4">
                 <button
                   onClick={startGame}
-                  className="px-4 sm:px-8 py-2 sm:py-4 bg-green-500 hover:bg-green-600 text-white text-lg sm:text-2xl font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all"
+                  className="px-4 sm:px-8 py-2 sm:py-4 bg-blue-500 hover:bg-blue-600 text-white text-lg sm:text-2xl font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all"
                   data-testid="button-start"
                 >
                   Start Game
@@ -377,7 +377,7 @@ function App() {
           )}
 
           <div 
-            className="absolute bottom-0 left-0 right-0 bg-green-600 border-t-2 sm:border-t-4 border-green-700"
+            className="absolute bottom-0 left-0 right-0 bg-blue-600 border-t-2 sm:border-t-4 border-blue-700"
             style={{ height: groundHeight }}
           />
         </div>
